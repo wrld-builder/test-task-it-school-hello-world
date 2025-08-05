@@ -1,0 +1,51 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:15
+    container_name: hero_api_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: hero_db
+      POSTGRES_USER: hero_user
+      POSTGRES_PASSWORD: hero_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hero_user -d hero_db || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hero_api_web
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DJANGO_DEBUG: "1"
+      DJANGO_ALLOWED_HOSTS: "*"
+      POSTGRES_DB: hero_db
+      POSTGRES_USER: hero_user
+      POSTGRES_PASSWORD: hero_pass
+      POSTGRES_HOST: db
+      POSTGRES_PORT: "5432"
+      SUPERHERO_API_TOKEN: "38a1bdec9f134c247896b7e7f80c5722"
+    ports:
+      - "8000:8000"
+    command: >
+      sh -c "python wait_for_db.py &&
+             python manage.py makemigrations heroapp &&
+             python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/code
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

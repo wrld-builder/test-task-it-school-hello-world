@@ -1,0 +1,57 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.pyd
+*.pyo
+*.egg-info/
+.eggs/
+dist/
+build/
+*.log
+
+# --- Virtual envs ---
+.env
+.env.*
+*.env
+.venv/
+venv/
+ENV/
+env/
+
+# --- Django ---
+# локальные БД для dev/test
+db.sqlite3
+*.sqlite3
+# собранные статики/медиа (если генерятся локально)
+staticfiles/
+static_root/
+media/
+
+# --- Pytest / Coverage / Caches ---
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.cache/
+coverage.xml
+
+# --- IDE / Editor ---
+.vscode/
+.idea/
+*.iml
+
+# --- OS junk ---
+.DS_Store
+Thumbs.db
+
+# --- Docker ---
+# локальные артефакты/архивы
+*.tar.gz
+*.zip
+
+# --- Node (на всякий случай) ---
+node_modules/
+npm-debug.log*
+yarn-error.log
