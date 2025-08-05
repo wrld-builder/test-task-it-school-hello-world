@@ -5,16 +5,14 @@ services:
     image: postgres:15
     container_name: hero_api_db
     restart: unless-stopped
-    environment:
-      POSTGRES_DB: hero_db
-      POSTGRES_USER: hero_user
-      POSTGRES_PASSWORD: hero_pass
+    env_file:
+      - .env
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U hero_user -d hero_db || exit 1"]
+      test: ["CMD-SHELL", "pg_isready -U \"$POSTGRES_USER\" -d \"$POSTGRES_DB\" || exit 1"]
       interval: 5s
       timeout: 5s
       retries: 20
@@ -27,15 +25,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    environment:
-      DJANGO_DEBUG: "1"
-      DJANGO_ALLOWED_HOSTS: "*"
-      POSTGRES_DB: hero_db
-      POSTGRES_USER: hero_user
-      POSTGRES_PASSWORD: hero_pass
-      POSTGRES_HOST: db
-      POSTGRES_PORT: "5432"
-      SUPERHERO_API_TOKEN: "38a1bdec9f134c247896b7e7f80c5722"
+    env_file:
+      - .env
     ports:
       - "8000:8000"
     command: >
