@@ -1,20 +1,5 @@
 """
 Views for the hero API.
-
-This module defines two endpoints on the same URL (``/hero/``) that
-respond to both POST and GET requests.  The POST endpoint accepts a
-``name`` parameter, looks up the superhero using an external API and
-persist the hero into the database.  The GET endpoint supports
-filtering heroes by name and a handful of numeric statistics.
-
-To avoid dependency on the official superheroapi.com service—which
-requires an access token—we default to using the open source
-``https://akabab.github.io/superhero-api/api/all.json`` dataset.
-Developers may optionally set ``SUPERHERO_API_TOKEN`` in the
-environment to instruct the code to call the official service instead.
-
-Error responses are returned with a 4xx status code and a JSON body
-containing a single ``error`` key describing the problem.
 """
 
 from __future__ import annotations
